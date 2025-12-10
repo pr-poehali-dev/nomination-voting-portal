@@ -3,25 +3,20 @@ import Header from '@/components/Header';
 import Countdown from '@/components/Countdown';
 import NominationCard from '@/components/NominationCard';
 import NominationModal from '@/components/NominationModal';
+import ChristmasLights from '@/components/ChristmasLights';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 
 const nominations = [
-  { id: 1, title: 'Лучший проект года' },
-  { id: 2, title: 'Инновация года' },
-  { id: 3, title: 'Лучший дизайн' },
-  { id: 4, title: 'Народный выбор' },
-  { id: 5, title: 'Прорыв года' },
-  { id: 6, title: 'Лучшая команда' },
-  { id: 7, title: 'Техническое совершенство' },
-  { id: 8, title: 'Социальное влияние' },
-  { id: 9, title: 'Экологичность' },
-  { id: 10, title: 'Лучшее решение' },
-  { id: 11, title: 'Креативность' },
-  { id: 12, title: 'Масштабируемость' },
-  { id: 13, title: 'Пользовательский опыт' },
-  { id: 14, title: 'Бизнес-модель' },
-  { id: 15, title: 'Будущее отрасли' }
+  { id: 1, title: 'Человек-память' },
+  { id: 2, title: 'Стиль года' },
+  { id: 3, title: 'Завоз года' },
+  { id: 4, title: 'Самое лучшее дуо' },
+  { id: 5, title: 'Слой queen' },
+  { id: 6, title: 'Слой king' },
+  { id: 7, title: 'Эксперт по почерку' },
+  { id: 8, title: 'Игроман года' },
+  { id: 9, title: 'Лучший друг школьного муравья' }
 ];
 
 const candidateNames = [
@@ -79,6 +74,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ChristmasLights />
       <Header />
       
       <section id="home" className="pt-32 pb-16 px-4">
@@ -191,9 +187,14 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="py-8 px-4 border-t border-border">
-        <div className="container mx-auto text-center text-sm text-muted-foreground">
-          <p>© 2024 Конкурс года. Все права защищены.</p>
+      <footer className="py-12 px-4 border-t border-border bg-secondary/30">
+        <div className="container mx-auto text-center">
+          <img 
+            src="https://cdn.poehali.dev/files/Text Sloy.png" 
+            alt="Sloy" 
+            className="h-24 mx-auto mb-6"
+          />
+          <p className="text-sm text-muted-foreground">© 2024 Sloy. Все права защищены.</p>
         </div>
       </footer>
     </div>
