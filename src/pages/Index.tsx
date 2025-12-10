@@ -2,25 +2,39 @@ import { useState } from 'react';
 import Header from '@/components/Header';
 import Countdown from '@/components/Countdown';
 import NominationCard from '@/components/NominationCard';
+import NominationModal from '@/components/NominationModal';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
 
 const nominations = [
-  { id: 1, title: 'Лучший проект года', votes: 127 },
-  { id: 2, title: 'Инновация года', votes: 98 },
-  { id: 3, title: 'Лучший дизайн', votes: 215 },
-  { id: 4, title: 'Народный выбор', votes: 342 },
-  { id: 5, title: 'Прорыв года', votes: 156 },
-  { id: 6, title: 'Лучшая команда', votes: 189 },
-  { id: 7, title: 'Техническое совершенство', votes: 143 },
-  { id: 8, title: 'Социальное влияние', votes: 201 },
-  { id: 9, title: 'Экологичность', votes: 167 },
-  { id: 10, title: 'Лучшее решение', votes: 134 },
-  { id: 11, title: 'Креативность', votes: 198 },
-  { id: 12, title: 'Масштабируемость', votes: 112 },
-  { id: 13, title: 'Пользовательский опыт', votes: 245 },
-  { id: 14, title: 'Бизнес-модель', votes: 178 },
-  { id: 15, title: 'Будущее отрасли', votes: 223 }
+  { id: 1, title: 'Лучший проект года' },
+  { id: 2, title: 'Инновация года' },
+  { id: 3, title: 'Лучший дизайн' },
+  { id: 4, title: 'Народный выбор' },
+  { id: 5, title: 'Прорыв года' },
+  { id: 6, title: 'Лучшая команда' },
+  { id: 7, title: 'Техническое совершенство' },
+  { id: 8, title: 'Социальное влияние' },
+  { id: 9, title: 'Экологичность' },
+  { id: 10, title: 'Лучшее решение' },
+  { id: 11, title: 'Креативность' },
+  { id: 12, title: 'Масштабируемость' },
+  { id: 13, title: 'Пользовательский опыт' },
+  { id: 14, title: 'Бизнес-модель' },
+  { id: 15, title: 'Будущее отрасли' }
+];
+
+const candidateNames = [
+  'Анна Смирнова',
+  'Елена Петрова',
+  'Мария Иванова',
+  'Дарья Кузнецова',
+  'Ольга Соколова',
+  'Татьяна Попова',
+  'Наталья Лебедева',
+  'Ирина Козлова',
+  'Екатерина Новикова',
+  'Светлана Морозова'
 ];
 
 const placeholderImages = [
@@ -35,6 +49,23 @@ const getRandomImages = () => {
 };
 
 const Index = () => {
+  const [selectedNomination, setSelectedNomination] = useState<{ id: number; title: string } | null>(null);
+  const [candidates] = useState(() => 
+    candidateNames.map((name, index) => ({
+      id: index + 1,
+      name,
+      image: placeholderImages[index % placeholderImages.length]
+    }))
+  );
+
+  const handleOpenNomination = (nomination: { id: number; title: string }) => {
+    setSelectedNomination(nomination);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedNomination(null);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -70,10 +101,19 @@ const Index = () => {
                 id={nomination.id}
                 title={nomination.title}
                 images={getRandomImages()}
-                votes={nomination.votes}
+                onClick={() => handleOpenNomination(nomination)}
               />
             ))}
           </div>
+          
+          {selectedNomination && (
+            <NominationModal
+              isOpen={true}
+              onClose={handleCloseModal}
+              title={selectedNomination.title}
+              candidates={candidates}
+            />
+          )}
         </div>
       </section>
 
@@ -83,31 +123,11 @@ const Index = () => {
             Результаты
           </h2>
           
-          <div className="space-y-4">
-            {nominations
-              .sort((a, b) => b.votes - a.votes)
-              .slice(0, 5)
-              .map((nomination, index) => (
-                <div
-                  key={nomination.id}
-                  className="flex items-center gap-4 p-6 bg-card rounded-lg border border-border hover:shadow-md transition-shadow"
-                >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-heading font-bold text-xl">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-heading font-semibold text-lg">
-                      {nomination.title}
-                    </h3>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Icon name="ThumbsUp" size={20} />
-                    <span className="font-heading font-bold text-xl">
-                      {nomination.votes}
-                    </span>
-                  </div>
-                </div>
-              ))}
+          <div className="text-center py-12">
+            <Icon name="Lock" size={48} className="mx-auto mb-4 text-muted-foreground" />
+            <p className="text-xl text-muted-foreground">
+              Результаты будут доступны после завершения голосования
+            </p>
           </div>
         </div>
       </section>
