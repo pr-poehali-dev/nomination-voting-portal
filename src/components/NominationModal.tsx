@@ -103,7 +103,7 @@ const NominationModal = ({ isOpen, onClose, title, nominationId, candidates: ini
                 <img
                   src={candidate.image}
                   alt={candidate.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full rounded-none object-scale-down"
                 />
               </div>
               
