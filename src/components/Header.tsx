@@ -20,7 +20,7 @@ const Header = () => {
           Sloy
         </h1>
         
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8 px-[392px]">
           <button
             onClick={() => scrollToSection('home')}
             className={`text-sm font-medium transition-colors hover:text-primary ${
