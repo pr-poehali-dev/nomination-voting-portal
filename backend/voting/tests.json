@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "Get candidates for nomination",
+      "method": "GET",
+      "path": "/?nomination_id=1",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "candidates": "array",
+        "voted_candidate_id": "any"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Vote for candidate",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "candidate_id": 1,
+        "nomination_id": 1
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

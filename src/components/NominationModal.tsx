@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -12,21 +12,75 @@ interface Candidate {
   id: number;
   name: string;
   image: string;
+  votes?: number;
 }
 
 interface NominationModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  nominationId: number;
   candidates: Candidate[];
 }
 
-const NominationModal = ({ isOpen, onClose, title, candidates }: NominationModalProps) => {
-  const [votedId, setVotedId] = useState<number | null>(null);
+const VOTING_API = 'https://functions.poehali.dev/5c699612-ca58-4ef2-9f5d-fee54e217634';
 
-  const handleVote = (candidateId: number) => {
-    if (votedId === null) {
-      setVotedId(candidateId);
+const NominationModal = ({ isOpen, onClose, title, nominationId, candidates: initialCandidates }: NominationModalProps) => {
+  const [votedId, setVotedId] = useState<number | null>(null);
+  const [candidates, setCandidates] = useState<Candidate[]>(initialCandidates);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadVotingData();
+    }
+  }, [isOpen, nominationId]);
+
+  const loadVotingData = async () => {
+    try {
+      const response = await fetch(`${VOTING_API}?nomination_id=${nominationId}`);
+      const data = await response.json();
+      
+      const candidatesWithImages = data.candidates.map((c: any, index: number) => ({
+        ...c,
+        image: initialCandidates[index % initialCandidates.length]?.image || initialCandidates[0].image
+      }));
+      
+      setCandidates(candidatesWithImages);
+      setVotedId(data.voted_candidate_id);
+    } catch (error) {
+      console.error('Error loading voting data:', error);
+    }
+  };
+
+  const handleVote = async (candidateId: number) => {
+    if (votedId !== null || loading) return;
+    
+    setLoading(true);
+    try {
+      const response = await fetch(VOTING_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          candidate_id: candidateId,
+          nomination_id: nominationId
+        })
+      });
+
+      if (response.ok) {
+        setVotedId(candidateId);
+        await loadVotingData();
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Ошибка при голосовании');
+      }
+    } catch (error) {
+      console.error('Error voting:', error);
+      alert('Ошибка при голосовании');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,7 +113,7 @@ const NominationModal = ({ isOpen, onClose, title, candidates }: NominationModal
               
               <Button
                 onClick={() => handleVote(candidate.id)}
-                disabled={votedId !== null}
+                disabled={votedId !== null || loading}
                 variant={votedId === candidate.id ? "default" : "outline"}
                 size="sm"
                 className="w-full"
@@ -71,6 +125,8 @@ const NominationModal = ({ isOpen, onClose, title, candidates }: NominationModal
                   </>
                 ) : votedId !== null ? (
                   'Недоступно'
+                ) : loading ? (
+                  'Загрузка...'
                 ) : (
                   'Голосовать'
                 )}
