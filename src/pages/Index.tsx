@@ -34,7 +34,18 @@ const candidateNames = [
   'Наталья Лебедева',
   'Ирина Козлова',
   'Екатерина Новикова',
-  'Светлана Морозова'
+  'Светлана Морозова',
+  'Виктория Волкова',
+  'Алиса Федорова',
+  'Юлия Михайлова',
+  'Вероника Алексеева',
+  'Кристина Васильева',
+  'Полина Григорьева',
+  'Диана Романова',
+  'Софья Киселева',
+  'Анастасия Зайцева',
+  'Маргарита Орлова',
+  'Валерия Павлова'
 ];
 
 const placeholderImages = [
@@ -73,7 +84,7 @@ const Index = () => {
       <section id="home" className="pt-32 pb-16 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-4xl md:text-6xl font-heading font-bold mb-6 animate-fade-in">
-            Конкурс 2024
+            Sloy
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-in">
             Голосуйте за лучшие проекты года. Ваш голос имеет значение!

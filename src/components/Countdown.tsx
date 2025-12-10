@@ -8,7 +8,7 @@ interface TimeLeft {
 }
 
 const Countdown = () => {
-  const targetDate = new Date('2024-12-31T23:59:59').getTime();
+  const targetDate = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).getTime();
   
   const calculateTimeLeft = (): TimeLeft => {
     const difference = targetDate - new Date().getTime();
